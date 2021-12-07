@@ -53,8 +53,11 @@ async def on_message(message):
         id = message.author.id
 
         if len(message.content[4:].strip()) == 0:
-          await message.channel.send("You must tell me your Ethereum address, {}!".format(displayname), reference=message)
-          return
+            await message.channel.send(
+                "You must tell me your Ethereum address, {}!".format(
+                    displayname),
+                reference=message)
+            return
 
         try:
             address = parse_address(message.content[4:].strip())
@@ -65,24 +68,24 @@ async def on_message(message):
                 reference=message)
             return
 
-        print("Airdrop: {} ({}): {}".format(displayname, id, address))
-
         try:
             updated = store_to_sheets(id, displayname, address)
+            print("Airdrop: {} ({}): {}".format(displayname, id, address))
         except:
             # Notify user that it's failed... maybe also notify admin
+            print("Failed to register recipient in sheets {} ({}), {}".format(displayname, id, address))
             await message.channel.send("I have failed you.", reference=message)
 
         if updated:
-          await message.channel.send(
-            "Your wish will be granted, replacing your previous wish. {}!".
-            format(displayname),
-            reference=message)
+            await message.channel.send(
+                "Your wish will be granted, replacing your previous wish, {}!".
+                format(displayname),
+                reference=message)
         else:
             await message.channel.send(
-            "Your wish will be granted.  Magical airdrop awaits you, {}!".
-            format(displayname),
-            reference=message)
+                "Your wish will be granted.  Magical airdrop awaits you, {}!".
+                format(displayname),
+                reference=message)
 
 
 keep_alive()
