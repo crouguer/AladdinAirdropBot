@@ -3,7 +3,7 @@ import os
 import re
 import gspread
 import json
-from keep_alive import keep_alive
+import neversleep
 
 client = discord.Client()
 keyfile_dict = json.loads(os.getenv('SVC_ACCT_KEY'))
@@ -88,5 +88,5 @@ async def on_message(message):
                 reference=message)
 
 
-keep_alive()
+neversleep.awake("https://AladdinAirdropBot.crouguer.repl.co", False)
 client.run(os.getenv('TOKEN'))
